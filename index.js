@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const inputContainer = document.querySelector('.input-container');
   const inputField = document.getElementById('inputField');
   const popup = document.getElementById('popup');
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const suggestions = ['Heading 1', 'Expandable Heading 1'];
 
-  inputField.addEventListener('input', function() {
+  inputField.addEventListener('input', function () {
     const value = inputField.value;
     if (value.startsWith('/')) {
       showOptions(inputField);
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  inputField.addEventListener('keydown', function(event) {
+  inputField.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
       event.preventDefault();
       if (inputField.value.startsWith('/1')) {
@@ -27,13 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           filterSuggestions(inputField);
         }
-      } else if (inputField.value.length > 0 ) {
+      } else if (inputField.value.length > 0) {
         hideSuggestions();
         createHeading(inputField);
         addNewInputField();
       }
+    } else if (event.key === 'Backspace' && inputField.value === '') {
+      focusPreviousInputField(inputField);
     }
-
   });
 
   function showOptions(input) {
@@ -56,10 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
       li.appendChild(h1);
       li.appendChild(span);
 
-      li.addEventListener('click', function() {
+      li.addEventListener('click', function () {
         input.placeholder = suggestion;
         input.value = '';
         input.classList.add('suggestion-placeholder');
+        input.focus();
         hideSuggestions();
       });
 
@@ -97,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const heading = '#';
       const subheading = '>>#';
 
-      if(suggestion === 'Heading 1'){
-        span.textContent = 'Shortcut: type ' + heading +  ' + space';
-      }else{
-        span.textContent = 'Shortcut: type ' + subheading +  ' + space';
+      if (suggestion === 'Heading 1') {
+        span.textContent = 'Shortcut: type ' + heading + ' + space';
+      } else {
+        span.textContent = 'Shortcut: type ' + subheading + ' + space';
       }
 
       span.classList.add('suggestion-subtext');
@@ -111,17 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
       li.appendChild(img);
       li.appendChild(div);
 
-      li.addEventListener('click', function() {
+      li.addEventListener('click', function () {
         input.placeholder = suggestion;
         input.value = '';
         input.classList.add('suggestion-placeholder');
+        input.focus();
         hideSuggestions();
       });
 
       suggestionsList.appendChild(li);
     });
   }
-
 
   function createHeading(input) {
     const text = input.value.substring(2);
@@ -137,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     newInputField.placeholder = 'Type / for blocks, @ to link docs or people';
     newInputField.classList.add('input');
 
-    newInputField.addEventListener('input', function() {
+    newInputField.addEventListener('input', function () {
       const value = newInputField.value;
       if (value.startsWith('/1')) {
         showOptions(newInputField);
@@ -146,23 +148,29 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    newInputField.addEventListener('keydown', function(event) {
+    newInputField.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' && newInputField.value.startsWith('/1')) {
         event.preventDefault();
         filterSuggestions(newInputField);
       } else if (event.key === 'Enter') {
         addNewInputField();
+      } else if (event.key === 'Backspace' && newInputField.value === '') {
+        focusPreviousInputField(newInputField);
       }
     });
 
     inputContainer.appendChild(newInputField);
     newInputField.focus();
   }
-  
+
+  function focusPreviousInputField(currentInput) {
+    const previousInput = currentInput.previousElementSibling;
+    if (previousInput && previousInput.tagName === 'INPUT') {
+      if (currentInput.value === '') {
+        previousInput.focus();
+        event.preventDefault();
+      }
+    }
+  }
+
 });
-
-
-
-
-
-
