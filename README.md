@@ -3,7 +3,7 @@
 <h1 align="center">Hi 👋, I'm Tasneem Salim</h1>
 
 
-[Demo of this project here](https://tasniema.github.io/the-task/)
+[Demo of this project here](https://tasniema.github.io/JS-task/)
 
 
 Features
